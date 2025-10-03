@@ -22,7 +22,7 @@ namespace Uralstech.UXR.QuestCamera
     /// Class for interfacing with the native Camera2 API on Android.
     /// </summary>
     [AddComponentMenu("Uralstech/UXR/Quest Camera/Quest Camera Manager")]
-    public class UCameraManager : DontCreateNewSingleton<UCameraManager>
+    public class UCameraManager : MonoBehaviour
     {
         /// <summary>
         /// The permission required to access the Meta Quest's cameras.
@@ -62,13 +62,23 @@ namespace Uralstech.UXR.QuestCamera
                 return _cameraInfosCached;
             }
         }
+        
+        public static bool HasInstance => Instance != null;
+        public static UCameraManager Instance { get; private set; }
 
         private CameraInfo[] _cameraInfosCached = null;
         private AndroidJavaObject _camera2Wrapper;
 
         protected override void Awake()
         {
-            base.Awake();
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Instance = this;
+            
             DontDestroyOnLoad(gameObject);
 
             using AndroidJavaClass camera2WrapperClass = new("com.uralstech.ucamera.Camera2Wrapper");
