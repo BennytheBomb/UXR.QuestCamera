@@ -14,7 +14,6 @@
 
 using System;
 using UnityEngine;
-using Uralstech.Utils.Singleton;
 
 namespace Uralstech.UXR.QuestCamera
 {
@@ -69,7 +68,7 @@ namespace Uralstech.UXR.QuestCamera
         private CameraInfo[] _cameraInfosCached = null;
         private AndroidJavaObject _camera2Wrapper;
 
-        protected override void Awake()
+        private void Awake()
         {
             if (Instance != null)
             {
